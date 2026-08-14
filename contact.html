@@ -95,7 +95,7 @@
         </div>
 
         <button type="submit" class="submit" id="submitBtn">Request my free trial</button>
-        <p class="fineprint">Or email us directly at hello@tutoringondemand.co.uk</p>
+        <p class="fineprint">Or email us directly at ellie.tutoringondemand@gmail.com</p>
 
         <div class="status-msg" id="statusMsg" role="status"></div>
       </form>
@@ -116,7 +116,7 @@
   // 3. Replace YOUR_FORM_ID below with that ID.
   // 4. Formspree will ask you to confirm your email the first time — do that.
 
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/mnpazyvd";
 
   const form = document.getElementById('bookingForm');
   const statusMsg = document.getElementById('statusMsg');
@@ -166,7 +166,7 @@
       }
     } catch (err) {
       statusMsg.classList.add('error');
-      statusMsg.textContent = "Something went wrong sending that. Please email hello@tutoringondemand.co.uk directly instead.";
+      statusMsg.textContent = "Something went wrong sending that. Please email ellie.tutoringondemand@gmail.com directly instead.";
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Request my free trial';
