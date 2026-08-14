@@ -9,25 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-  .hero-logo-wrap{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background: var(--white);
-    border: 1px solid var(--paper-line);
-    border-radius: 18px;
-    box-shadow: 0 24px 60px -32px rgba(22,33,62,0.4);
-    padding: 48px;
-    min-height: 260px;
-  }
-
-  .hero-logo-wrap img{
+  .hero-photo{
+    aspect-ratio: 4/3.4;
     width: 100%;
-    max-width: 220px;
-  }
-
-  @media (max-width: 860px){
-    .hero-logo-wrap{ padding: 36px; min-height: 0; }
+    border-radius: 18px;
+    background: var(--navy);
+    object-fit: cover;
+    box-shadow: 0 24px 60px -32px rgba(22,33,62,0.4);
   }
 
   .how-grid{
@@ -102,9 +90,7 @@
           <li><span class="tick">✓</span> First session completely free</li>
         </ul>
       </div>
-      <div class="hero-logo-wrap">
-        <img src="Logo.jpeg" alt="Tutoring On Demand logo">
-      </div>
+      <img class="hero-photo" src="tutoring_image.png" alt="A tutor working through a problem with a student">
     </section>
 
     <section class="section">
