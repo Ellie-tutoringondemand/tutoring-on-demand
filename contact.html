@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact - Tutoring On Demand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="brand">Tutoring <span>On Demand</span></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="subjects.html">Subjects</a>
+      <a href="tutors.html">Tutors</a>
+      <a href="contact.html" class="current">Contact</a>
+    </nav>
+  </header>
+
+  <main class="wrap split">
+    <div>
+      <p class="eyebrow">Book a free trial session</p>
+      <h1>Let's find the <em class="mark">right tutor</em> for you</h1>
+      <p class="lede">Tell us a bit about what you need and we'll match you with a tutor who got an A* in that exact subject — and remembers exactly how to get you there too.</p>
+
+      <ul class="trust-list">
+        <li><span class="tick">✓</span> First session is completely free, no card required</li>
+        <li><span class="tick">✓</span> Every tutor scored A* in the subject they teach</li>
+        <li><span class="tick">✓</span> We usually reply within 24 hours</li>
+      </ul>
+
+      <div class="subject-block">
+        <p class="label">Popular subjects</p>
+        <div class="tags">
+          <span class="tag accent">Maths</span>
+          <span class="tag accent">Chemistry</span>
+          <span class="tag accent">Biology</span>
+          <span class="tag">Physics</span>
+          <span class="tag">English Lit</span>
+          <span class="tag">History</span>
+          <span class="tag">French</span>
+          <span class="tag">+ more</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Request your free trial</h2>
+      <p class="sub">Fill this in and we'll email you to arrange a time.</p>
+
+      <form id="bookingForm" autocomplete="on">
+        <div class="field">
+          <label for="parentName">Your name</label>
+          <input type="text" id="parentName" name="name" required>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone (optional)</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+        </div>
+
+        <fieldset>
+          <legend>Level</legend>
+          <div class="level-options">
+            <label><input type="radio" name="level" value="GCSE" checked><span>GCSE</span></label>
+            <label><input type="radio" name="level" value="A-Level"><span>A-Level</span></label>
+            <label><input type="radio" name="level" value="Other"><span>Other</span></label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="subject">Subject(s) needed</label>
+          <input type="text" id="subject" name="subject" placeholder="e.g. GCSE Maths and Chemistry" required>
+        </div>
+
+        <div class="field">
+          <label for="message">Anything else? (availability, goals, exam board)</label>
+          <textarea id="message" name="message" placeholder="e.g. Free most weekday evenings, aiming for a 7 in Maths"></textarea>
+        </div>
+
+        <!-- honeypot spam trap, hidden from real users -->
+        <div style="position:absolute; left:-9999px;" aria-hidden="true">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button type="submit" class="submit" id="submitBtn">Request my free trial</button>
+        <p class="fineprint">Or email us directly at hello@tutoringondemand.co.uk</p>
+
+        <div class="status-msg" id="statusMsg" role="status"></div>
+      </form>
+    </div>
+  </main>
+
+  <footer>&copy; 2025 Tutoring On Demand. All rights reserved.</footer>
+
+<script>
+  // ---- Booking form submission ----
+  // This form posts to Formspree (https://formspree.io), a free service that
+  // forwards submissions straight to your inbox — no backend server needed.
+  //
+  // SETUP (one-time, ~2 minutes):
+  // 1. Go to https://formspree.io and sign up free.
+  // 2. Create a new form, it gives you an endpoint like:
+  //       https://formspree.io/f/abcd1234
+  // 3. Replace YOUR_FORM_ID below with that ID.
+  // 4. Formspree will ask you to confirm your email the first time — do that.
+
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+
+  const form = document.getElementById('bookingForm');
+  const statusMsg = document.getElementById('statusMsg');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // little "marked" tick animation as fields are filled in correctly
+  form.querySelectorAll('input[required], textarea[required]').forEach(el => {
+    el.addEventListener('blur', () => {
+      const field = el.closest('.field');
+      if(!field) return;
+      if(el.checkValidity() && el.value.trim() !== ''){
+        field.classList.add('valid');
+      } else {
+        field.classList.remove('valid');
+      }
+    });
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusMsg.className = 'status-msg';
+    statusMsg.textContent = '';
+
+    // honeypot check
+    if(form.company.value){
+      return; // silently drop likely spam
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        statusMsg.classList.add('success');
+        statusMsg.textContent = "Thanks — that's in! We'll email you within 24 hours to set up your free trial.";
+        form.reset();
+        form.querySelectorAll('.field.valid').forEach(f => f.classList.remove('valid'));
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (err) {
+      statusMsg.classList.add('error');
+      statusMsg.textContent = "Something went wrong sending that. Please email hello@tutoringondemand.co.uk directly instead.";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Request my free trial';
+    }
+  });
+</script>
+
+</body>
+</html>
